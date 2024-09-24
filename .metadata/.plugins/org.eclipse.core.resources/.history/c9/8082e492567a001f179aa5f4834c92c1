@@ -1,0 +1,88 @@
+package com.project.ecommerce.service.concretes;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.project.ecommerce.exceptions.ProductNotFoundException;
+import com.project.ecommerce.model.Product;
+import com.project.ecommerce.repository.ProductRepository;
+import com.project.ecommerce.service.abstracts.IProductService;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class ProductManager implements IProductService{
+	private ProductRepository productRepository;
+	@Override
+	public Product addProduct(Product product) {
+		return null;
+	}
+
+	@Override
+	public List<Product> getAllProducts() {
+		return productRepository.findAll();
+	}
+
+	@Override
+	public Product getProductById(Long id) {
+	
+		return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product not found!"));
+	}
+
+	@Override
+	public void deleteProductById(Long id) {
+		/*
+		 * productrepository.findById(id).ifPresentOrElse(productrepository::delete, ()
+		 * -> {throw new ProductNotFoundException("Product not found");});
+		 */
+		try {
+			productRepository.deleteById(id);
+		} catch (ProductNotFoundException e) {
+			System.out.println("Product not found!");
+		}
+	}
+
+	@Override
+	public void updateProduct(Product product, Long id) {
+	
+	}
+	
+	@Override
+	public List<Product> getProductsByCategoryName(String categoryName) {
+		// TODO Auto-generated method stub
+		return productRepository.findByCategory(categoryName);
+	}
+
+	@Override
+	public List<Product> getProductsByBrand(String brand) {
+		return productRepository.findByBrand(brand);
+	}
+
+	@Override
+	public List<Product> getProductsByCategoryAndBrand(String categoryName, String brand) {
+		// TODO Auto-generated method stub
+		return productRepository.findByCategoryAndBrand(categoryName,brand);
+	}
+
+	@Override
+	public List<Product> getProductsByName(String name) {
+		return productRepository.findByName(name);
+	}
+
+	@Override
+	public List<Product> getProductsByBrandAndName(String brand, String name) {
+		// TODO Auto-generated method stub
+		return productRepository.findByBrandAndName(brand,name);
+	}
+
+	@Override
+	public Long countProductsByBrandAndName(String brand, String name) {
+		// TODO Auto-generated method stub
+		return productRepository.countByBrandAndName(brand,name);
+	}
+
+	
+
+}

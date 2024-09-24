@@ -1,0 +1,5 @@
+package com.project.ecommerce.request;
+
+public class CreateProductRequest {
+
+}

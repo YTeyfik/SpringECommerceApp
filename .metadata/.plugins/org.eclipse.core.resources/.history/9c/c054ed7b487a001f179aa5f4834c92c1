@@ -1,0 +1,5 @@
+package com.project.ecommerce.service.product;
+
+public class ProductService {
+
+}

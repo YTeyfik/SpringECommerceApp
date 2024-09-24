@@ -1,0 +1,5 @@
+package com.project.ecommerce.service.concretes;
+
+public class ProductManager {
+
+}
