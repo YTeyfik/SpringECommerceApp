@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.project.ecommerce.exceptions.AlreadyExistsException;
-import com.project.ecommerce.exceptions.CategoryNotFoundException;
+import com.project.ecommerce.exceptions.ResourceNotFoundException;
 import com.project.ecommerce.model.Category;
 import com.project.ecommerce.repository.CategoryRepository;
 import com.project.ecommerce.service.abstracts.CategoryService;
@@ -22,7 +22,7 @@ public class CategoryManager implements CategoryService{
 	@Override
 	public Category getCategoryById(Long id) {
 		return categoryRepository.findById(id)
-				.orElseThrow(()-> new CategoryNotFoundException("Category not found!"));
+				.orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
 	}
 
 	@Override
@@ -46,13 +46,13 @@ public class CategoryManager implements CategoryService{
 		return Optional.ofNullable(getCategoryById(id)).map(oldCategory -> {
 			oldCategory.setName(category.getName());
 			return categoryRepository.save(oldCategory);
-		}).orElseThrow(()-> new CategoryNotFoundException("Category not found!"));
+		}).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
 	}
 
 	@Override
 	public void deleteCategoryById(Long id) {
 		categoryRepository.findById(id).ifPresentOrElse(categoryRepository :: delete,
-				()->{throw new CategoryNotFoundException("Category not found!");});
+				()->{throw new ResourceNotFoundException("Category not found!");});
 	}
 
 }

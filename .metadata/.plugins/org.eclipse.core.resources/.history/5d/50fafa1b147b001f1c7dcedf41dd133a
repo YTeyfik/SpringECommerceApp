@@ -1,0 +1,61 @@
+package com.project.ecommerce.service.concretes;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.sql.rowset.serial.SerialBlob;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.ecommerce.exceptions.ResourceNotFoundException;
+import com.project.ecommerce.model.Image;
+import com.project.ecommerce.repository.ImageRepository;
+import com.project.ecommerce.service.abstracts.ImageService;
+import com.project.ecommerce.service.abstracts.ProductService;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class ImageManager implements ImageService{
+	
+	private ImageRepository imageRepository;
+	private ProductService productService;
+	
+	@Override
+	public Image getImageById(Long id) {
+		// TODO Auto-generated method stub
+		return imageRepository.findById(id)
+				.orElseThrow(()->new ResourceNotFoundException("Image not found wit this id: "+id));
+	}
+
+	@Override
+	public void deleteImageById(long id) {
+		imageRepository.findById(id).ifPresentOrElse(imageRepository :: delete, ()->{
+			throw new ResourceNotFoundException("Image not found wit this id: "+id);
+		});
+	}
+
+	@Override
+	public Image addImage(MultipartFile file, Long ProductId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateImage(MultipartFile file, Long imageId) {
+		Image image =getImageById(imageId);
+		
+		try {
+			image.setFileType(file.getContentType());
+			image.setFileName(file.getOriginalFilename());
+			image.setImage(new SerialBlob(file.getBytes()));
+			imageRepository.save(image);
+		} catch (IOException | SQLException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		
+	}
+
+}

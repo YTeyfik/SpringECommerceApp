@@ -1,0 +1,11 @@
+package com.project.ecommerce.service.concretes;
+
+import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class ImageManager implements Image{
+
+}

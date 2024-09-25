@@ -5,20 +5,20 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.project.ecommerce.exceptions.ProductNotFoundException;
+import com.project.ecommerce.exceptions.ResourceNotFoundException;
 import com.project.ecommerce.model.Category;
 import com.project.ecommerce.model.Product;
 import com.project.ecommerce.repository.CategoryRepository;
 import com.project.ecommerce.repository.ProductRepository;
 import com.project.ecommerce.request.AddProductRequest;
 import com.project.ecommerce.request.UpdateProductRequest;
-import com.project.ecommerce.service.abstracts.IProductService;
+import com.project.ecommerce.service.abstracts.ProductService;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ProductManager implements IProductService{
+public class ProductManager implements ProductService{
 	private ProductRepository productRepository;
 	private CategoryRepository categoryRepository;
 	
@@ -57,17 +57,17 @@ public class ProductManager implements IProductService{
 	@Override
 	public Product getProductById(Long id) {
 	
-		return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product not found!"));
+		return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
 	}
 
 	@Override
 	public void deleteProductById(Long id){
 		  productRepository.findById(id).ifPresentOrElse(productRepository ::delete, 
-				  () -> {throw new ProductNotFoundException("Product not found");});
+				  () -> {throw new ResourceNotFoundException("Product not found");});
 		 
 		/*
 		 * try { productRepository.deleteById(id); } catch (RuntimeException e) { throw
-		 * new ProductNotFoundException("Product not found!"); }
+		 * new ResourceNotFoundException("Product not found!"); }
 		 */
 		
 		
@@ -78,7 +78,7 @@ public class ProductManager implements IProductService{
 		return productRepository.findById(id)
 				.map(existingProduct -> updateExistingProduct(existingProduct, request))
 				.map(productRepository :: save)
-				.orElseThrow(()->new ProductNotFoundException("Product not found!"));
+				.orElseThrow(()->new ResourceNotFoundException("Product not found!"));
 	}
 	
 	private Product updateExistingProduct(Product existingProduct,UpdateProductRequest request) {
