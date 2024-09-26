@@ -27,9 +27,9 @@ public class Product {
 	private Long id;
 	private String name;
 	private String brand;
-	private String description;
 	private BigDecimal price;
 	private int inventory;
+	private String description;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="category_id")
@@ -38,13 +38,13 @@ public class Product {
 	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Image> images;
 	public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
+		super();
 		this.name = name;
 		this.brand = brand;
 		this.price = price;
 		this.inventory = inventory;
 		this.description = description;
-
-		this.category=category;
+		this.category = category;
 	}
 	
 	

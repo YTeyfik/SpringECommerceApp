@@ -27,6 +27,9 @@ import com.project.ecommerce.model.Image;
 import com.project.ecommerce.response.ApiResponse;
 import com.project.ecommerce.service.abstracts.ImageService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/images")
 public class ImageController {

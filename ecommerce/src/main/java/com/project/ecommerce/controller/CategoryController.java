@@ -19,8 +19,11 @@ import com.project.ecommerce.model.Category;
 import com.project.ecommerce.response.ApiResponse;
 import com.project.ecommerce.service.abstracts.CategoryService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @RestController
-@RequestMapping("$api.prefix}/categoıries")
+@RequestMapping("${api.prefix}/categories")
 public class CategoryController {
 	private CategoryService categoryService;
 	
@@ -30,7 +33,7 @@ public class CategoryController {
 			List<Category> categories = categoryService.getAllCategories();
 			return ResponseEntity.ok(new ApiResponse("Found all categories!", categories));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Error", null));
 		}
 	}
 	

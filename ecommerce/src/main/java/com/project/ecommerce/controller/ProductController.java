@@ -2,6 +2,7 @@ package com.project.ecommerce.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,10 +22,13 @@ import com.project.ecommerce.request.UpdateProductRequest;
 import com.project.ecommerce.response.ApiResponse;
 import com.project.ecommerce.service.abstracts.ProductService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
-	
+	//@Autowired
 	private ProductService productService;
 	
 	@GetMapping("/all")
@@ -44,7 +48,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/brand-and-Name")
-	public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brandName,@RequestParam String productName){
+	public ResponseEntity<ApiResponse> getProductsByBrandAndName(@RequestParam String brandName,@RequestParam String productName){
 		try {
 			List<Product> products=productService.getProductsByBrandAndName(brandName, productName);
 			if(products.isEmpty()) {
@@ -57,7 +61,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/category-and-brand")
-	public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@RequestParam String categoryName,@RequestParam String brandName){
+	public ResponseEntity<ApiResponse> getProductsByCategoryAndBrand(@RequestParam String categoryName,@RequestParam String brandName){
 		try {
 			List<Product> products=productService.getProductsByCategoryAndBrand(categoryName, brandName);
 			if(products.isEmpty()) {
@@ -70,7 +74,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/{name}")
-	public ResponseEntity<ApiResponse> getProductByName(@PathVariable String name){
+	public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String name){
 		try {
 			List<Product> products=productService.getProductsByName(name);
 			if(products.isEmpty()) {
@@ -83,7 +87,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/{brandName}")
-	public ResponseEntity<ApiResponse> getProductByBrand(@PathVariable String brandName){
+	public ResponseEntity<ApiResponse> getProductsByBrand(@PathVariable String brandName){
 		try {
 			List<Product> products=productService.getProductsByBrand(brandName);
 			if(products.isEmpty()) {
@@ -96,7 +100,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/{categoryName}")
-	public ResponseEntity<ApiResponse> getProductByCategoryName(@PathVariable String categoryName){
+	public ResponseEntity<ApiResponse> getProductsByCategoryName(@PathVariable String categoryName){
 		try {
 			List<Product> products=productService.getProductsByCategoryName(categoryName);
 			if(products.isEmpty()) {
@@ -137,6 +141,16 @@ public class ProductController {
 			return ResponseEntity.ok(new ApiResponse("Delete success!",id));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+	
+	@GetMapping("/count/brand-and-Name")
+	public ResponseEntity<ApiResponse> countProductsByBrandAndName(@RequestParam String brandName,@RequestParam String productName){
+		try {
+			Long productCount=productService.countProductsByBrandAndName(brandName, productName);
+			return ResponseEntity.ok(new ApiResponse("Product count! ", productCount));
+		} catch (Exception e) {
+			return ResponseEntity.ok(new ApiResponse(e.getMessage(),null));
 		}
 	}
 	
